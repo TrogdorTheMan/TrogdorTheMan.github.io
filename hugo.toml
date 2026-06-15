@@ -1,0 +1,48 @@
+baseURL = "https://TrogdorTheMan.github.io/"
+languageCode = "en-us"
+title = "Cory | Dev & IT Blog"
+theme = "PaperMod"
+paginate = 10
+
+[params]
+  author = "Cory"
+  description = "IT consultant writing about PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
+  defaultTheme = "dark"
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowShareButtons = false
+  ShowToc = true
+  TocOpen = false
+  disableScrollToTop = false
+  comments = false
+
+[params.homeInfoParams]
+  Title = "Hi, I'm Cory"
+  Content = "IT consultant and independent technology consultant. I write about what I build — PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/TrogdorTheMan"
+
+[menu]
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
+    weight = 10
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 20
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 30
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[markup.highlight]
+  noClasses = false
