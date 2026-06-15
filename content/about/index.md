@@ -3,6 +3,7 @@ title: "About"
 layout: "about"
 url: "/about/"
 summary: "about"
+ShowToc: false
 ---
 
 I'm Cory, an IT consultant and independent technology consultant based in the Pacific Northwest. I've spent the last several years doing hands-on work with SharePoint/M365, Azure, PowerShell automation, and DevOps tooling — mostly for mid-sized organizations that need things to actually work rather than just look good in a slide deck.
