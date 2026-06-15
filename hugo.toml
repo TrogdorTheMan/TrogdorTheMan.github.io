@@ -4,6 +4,11 @@ title = "Cory | Dev & IT Blog"
 theme = "PaperMod"
 paginate = 10
 
+[params.assets]
+  favicon = "favicon-32x32.png"
+  favicon16x16 = "favicon-16x16.png"
+  favicon32x32 = "favicon-32x32.png"
+
 [params]
   author = "Cory"
   description = "IT consultant writing about PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
