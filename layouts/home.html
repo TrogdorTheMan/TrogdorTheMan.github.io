@@ -1,0 +1,64 @@
+{{- define "main" }}
+
+<section class="home-hero">
+  {{- with site.Params.heroImage }}
+  <img class="hero-avatar" src="{{ . }}" alt="{{ site.Params.author }}" width="120" height="120" loading="eager">
+  {{- end }}
+  <h1>Hi, I'm Cory.</h1>
+  <p class="hero-tagline">I build automation that makes Microsoft 365 easier to live with.</p>
+  <p class="hero-intro">
+    Independent IT consultant in the Pacific Northwest. I work hands-on with PowerShell, Azure, and
+    SharePoint for organizations that need things to actually work. This site is where I show what
+    I've built and write about what breaks along the way.
+  </p>
+  <div class="hero-actions">
+    <a class="btn" href="/projects/">See my projects</a>
+    <a class="btn btn-outline" href="mailto:{{ site.Params.email }}">Get in touch</a>
+  </div>
+  {{- partial "social_icons.html" (dict) }}
+  <ul class="hero-chips">
+    {{- range site.Params.heroSkills }}
+    <li>{{ . }}</li>
+    {{- end }}
+  </ul>
+</section>
+
+<section class="home-section">
+  <div class="section-head">
+    <h2>Projects</h2>
+    <a class="section-link" href="/projects/">View all</a>
+  </div>
+  <div class="project-grid">
+    {{- $projects := (where site.RegularPages "Section" "projects").ByWeight }}
+    {{- range first 3 $projects }}
+    {{- partial "project-card.html" . }}
+    {{- end }}
+  </div>
+</section>
+
+<section class="home-section">
+  <div class="section-head">
+    <h2>Recent posts</h2>
+    <a class="section-link" href="/posts/">All posts</a>
+  </div>
+  {{- $posts := where site.RegularPages "Section" "posts" }}
+  {{- range first 3 $posts.ByDate.Reverse }}
+  <article class="post-row">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+    <h3>{{ .Title }}</h3>
+    <p>{{ .Description }}</p>
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+  </article>
+  {{- end }}
+</section>
+
+<section class="home-section home-cta">
+  <h2>Have a problem worth solving?</h2>
+  <p>
+    A migration that keeps stalling, a process that should be a script, or a weird SharePoint
+    behavior nobody can explain. I'd like to hear about it.
+  </p>
+  <a class="btn" href="mailto:{{ site.Params.email }}">Email me</a>
+</section>
+
+{{- end }}{{- /* end main */ -}}

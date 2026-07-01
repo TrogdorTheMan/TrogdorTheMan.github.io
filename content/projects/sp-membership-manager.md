@@ -1,6 +1,7 @@
 ---
 title: "SP-MembershipManager"
 date: 2026-06-14
+weight: 1
 draft: false
 tags: ["PowerShell", "SharePoint", "Entra ID", "GitHub Actions", ".NET"]
 description: "PowerShell 7+ / C# .NET 8 tool for managing SharePoint site membership with cert-based Entra auth."

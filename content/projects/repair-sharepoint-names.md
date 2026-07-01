@@ -1,6 +1,7 @@
 ---
 title: "Repair-SharePointNames"
 date: 2026-06-14
+weight: 3
 draft: false
 tags: ["PowerShell", "SharePoint", "Migration"]
 description: "PowerShell script for repairing file and folder names flagged by SPMT scan logs before SharePoint migration."

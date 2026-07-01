@@ -1,0 +1,12 @@
+<article class="project-card">
+  <h3>{{ .Title }}</h3>
+  <p>{{ .Description }}</p>
+  {{- with .Params.tags }}
+  <ul class="card-tags">
+    {{- range first 3 . }}
+    <li>{{ . }}</li>
+    {{- end }}
+  </ul>
+  {{- end }}
+  <a class="entry-link" aria-label="project link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+</article>

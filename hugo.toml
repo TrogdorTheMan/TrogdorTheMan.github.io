@@ -1,8 +1,10 @@
 baseURL = "https://TrogdorTheMan.github.io/"
-languageCode = "en-us"
-title = "Cory | Dev & IT Blog"
+locale = "en-us"
+title = "Cory | IT Consultant & Developer"
 theme = "PaperMod"
-paginate = 10
+
+[pagination]
+  pagerSize = 10
 
 [params.assets]
   favicon = "favicon-32x32.png"
@@ -12,6 +14,9 @@ paginate = 10
 [params]
   author = "Cory"
   description = "IT consultant writing about PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
+  email = "me@corymf.com"
+  heroImage = "https://github.com/TrogdorTheMan.png"
+  heroSkills = ["PowerShell", ".NET", "Azure", "SharePoint / M365", "GitHub Actions", "CI/CD"]
   defaultTheme = "dark"
   ShowReadingTime = true
   ShowPostNavLinks = true
@@ -23,22 +28,22 @@ paginate = 10
   disableScrollToTop = false
   comments = false
 
-[params.homeInfoParams]
-  Title = "Hi, I'm Cory"
-  Content = "IT consultant and independent technology consultant. I write about what I build — PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
-
 [[params.socialIcons]]
   name = "github"
   url = "https://github.com/TrogdorTheMan"
 
+[[params.socialIcons]]
+  name = "email"
+  url = "mailto:me@corymf.com"
+
 [menu]
-  [[menu.main]]
-    name = "Blog"
-    url = "/posts/"
-    weight = 10
   [[menu.main]]
     name = "Projects"
     url = "/projects/"
+    weight = 10
+  [[menu.main]]
+    name = "Blog"
+    url = "/posts/"
     weight = 20
   [[menu.main]]
     name = "About"
