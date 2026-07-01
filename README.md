@@ -1,36 +1,39 @@
 # TrogdorTheMan.github.io
 
-Personal dev/IT blog and portfolio at [TrogdorTheMan.github.io](https://TrogdorTheMan.github.io).
+Personal portfolio, resume, and dev/IT blog at [TrogdorTheMan.github.io](https://TrogdorTheMan.github.io).
 
 ## Stack
 
-- **SSG:** [Hugo](https://gohugo.io/)
-- **Theme:** [PaperMod](https://github.com/adityatelange/hugo-PaperMod) (git submodule)
+- **SSG:** [Hugo](https://gohugo.io/) 0.146+ (new template system)
+- **Theme:** [PaperMod](https://github.com/adityatelange/hugo-PaperMod) (git submodule) with custom portfolio layouts
 - **Hosting:** GitHub Pages
-- **Deploy:** GitHub Actions — push to `main` triggers a Hugo build and deploys via the Pages artifact API
+- **Deploy:** GitHub Actions. Push to `main` triggers a Hugo build and deploys via the Pages artifact API.
 
-## Content structure
+## Structure
 
 ```
 content/
-  about/          # About page
-  posts/          # Blog posts (PowerShell, Azure, SharePoint/M365, GitHub Actions, etc.)
-  projects/       # Portfolio project writeups
+  about/                  # About page
+  resume/                 # HTML resume
+  posts/                  # Blog posts (PowerShell, Azure, SharePoint/M365, AI, etc.)
+  projects/               # Portfolio project writeups (ordered by front matter weight)
+layouts/
+  home.html               # Custom portfolio homepage: hero, stats, project cards, recent posts
+  projects/list.html      # Projects section as a card grid
+  _partials/project-card.html
+assets/css/extended/
+  portfolio.css           # Portfolio styles; accent color, cards, stats, buttons
+```
+
+Hero copy, skill chips, and the stats row are configured in `hugo.toml` under `params.heroSkills` and `params.heroStats`.
+
+## Local development
+
+```bash
+git submodule update --init   # first clone only
+hugo server
 ```
 
 ## Deploy
 
-Push to `main`. The GitHub Actions workflow at `.github/workflows/deploy.yml` handles everything:
-
-1. Checks out the repo with submodules
-2. Builds with `hugo --minify`
-3. Uploads the `public/` directory as a Pages artifact
-4. Deploys to GitHub Pages
-
-## First-time GitHub setup
-
-1. Create a **public** GitHub repo named `TrogdorTheMan.github.io` (no auto-generated files)
-2. Push this repo to it
-3. In repo settings → Pages → Source → set to **GitHub Actions**
-
-After that, every push to `main` auto-deploys.
+Push to `main`. The workflow at `.github/workflows/deploy.yml` checks out the repo with submodules, builds with `hugo --minify`, and deploys the Pages artifact. Add `[skip ci]` to a commit message to skip the deploy.
