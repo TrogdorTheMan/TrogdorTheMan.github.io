@@ -1,10 +1,10 @@
 :root {
-    --accent: #c2410c;
+    --accent: #7c3aed;
     --accent-contrast: #ffffff;
 }
 
 :root[data-theme="dark"] {
-    --accent: #ff8a4c;
+    --accent: #a78bfa;
     --accent-contrast: #1d1e20;
 }
 
@@ -101,6 +101,38 @@
     background: var(--accent);
     color: var(--accent-contrast);
     opacity: 1;
+}
+
+/* ---- Stats row ---- */
+
+.home-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--content-gap);
+    margin-top: var(--gap);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--content-gap);
+    text-align: center;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--secondary);
+    line-height: 1.4;
 }
 
 /* ---- Home sections ---- */

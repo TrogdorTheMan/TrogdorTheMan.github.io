@@ -1,6 +1,6 @@
 baseURL = "https://TrogdorTheMan.github.io/"
 locale = "en-us"
-title = "Cory | IT Consultant & Developer"
+title = "Cory Francis | Engineering Leader & Builder"
 theme = "PaperMod"
 
 [pagination]
@@ -12,11 +12,11 @@ theme = "PaperMod"
   favicon32x32 = "favicon-32x32.png"
 
 [params]
-  author = "Cory"
-  description = "IT consultant writing about PowerShell, Azure, SharePoint/M365, GitHub Actions, and whatever else breaks in interesting ways."
+  author = "Cory Francis"
+  description = "Engineering leader and independent consultant in Seattle. A decade of infrastructure, cloud, and SRE leadership, now back to hands-on building and open source."
   email = "me@corymf.com"
   heroImage = "https://github.com/TrogdorTheMan.png"
-  heroSkills = ["PowerShell", ".NET", "Azure", "SharePoint / M365", "GitHub Actions", "CI/CD"]
+  heroSkills = ["AWS", "Azure", "Terraform", "Kubernetes", "PowerShell", "Python", "Node.js", "GitHub Actions", "SharePoint / M365"]
   defaultTheme = "dark"
   ShowReadingTime = true
   ShowPostNavLinks = true
@@ -28,9 +28,29 @@ theme = "PaperMod"
   disableScrollToTop = false
   comments = false
 
+[[params.heroStats]]
+  value = "9+ yrs"
+  label = "leading infrastructure, cloud, and SRE teams"
+
+[[params.heroStats]]
+  value = "100+"
+  label = "microservices migrated out of a legacy monolith"
+
+[[params.heroStats]]
+  value = "100/wk"
+  label = "production deploys, up from once every two weeks"
+
+[[params.heroStats]]
+  value = "$250K/mo"
+  label = "cloud budget owned and optimized"
+
 [[params.socialIcons]]
   name = "github"
   url = "https://github.com/TrogdorTheMan"
+
+[[params.socialIcons]]
+  name = "linkedin"
+  url = "https://www.linkedin.com/in/cfzb"
 
 [[params.socialIcons]]
   name = "email"
@@ -41,6 +61,10 @@ theme = "PaperMod"
     name = "Projects"
     url = "/projects/"
     weight = 10
+  [[menu.main]]
+    name = "Resume"
+    url = "/resume/"
+    weight = 15
   [[menu.main]]
     name = "Blog"
     url = "/posts/"
