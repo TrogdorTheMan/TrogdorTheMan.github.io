@@ -3,7 +3,7 @@ backend:
   repo: TrogdorTheMan/TrogdorTheMan.github.io
   branch: main
 
-site_url: https://TrogdorTheMan.github.io
+site_url: https://corymf.com
 media_folder: static/images
 public_folder: /images
 
