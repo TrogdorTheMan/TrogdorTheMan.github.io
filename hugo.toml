@@ -15,7 +15,8 @@ theme = "PaperMod"
   author = "Cory Francis"
   description = "Engineering leader and independent consultant in Seattle. A decade of infrastructure, cloud, and SRE leadership, now back to hands-on building and open source."
   email = "me@corymf.com"
-  heroImage = "https://media.licdn.com/dms/image/v2/D5635AQEuPgx2dH_lMA/profile-framedphoto-shrink_800_800/B56Z1kBWL4KMAg-/0/1775499568056?e=1783555200&v=beta&t=nvh0bub6bNmwHbK9B9GBcptNp8cwKkjlEeduklU0ssI"
+  heroImage = "/images/cory-francis.jpg"
+  images = ["/images/cory-francis.jpg"]
   heroSkills = ["AWS", "Azure", "Terraform", "Kubernetes", "PowerShell", "Python", "Node.js", "GitHub Actions", "SharePoint / M365"]
   defaultTheme = "dark"
   ShowReadingTime = true

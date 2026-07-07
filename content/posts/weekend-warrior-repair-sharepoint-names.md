@@ -1,6 +1,6 @@
 ---
 title: "Weekend Warrior: Repair-SharePointNames v1.0 is live!"
-date: 2026-07-5
+date: 2026-07-05
 draft: false
 tags: ["PowerShell", "SharePoint", "AI", "SysAdmin", "OpenSource"]
 description: "I just published Repair-SharePointNames to PowerShell Gallery — bulk-fixes those INVALID_SHAREPOINT_NAME warnings SPMT dumps on you after a scan, with safe renaming, lock/temp file quarantine, and a full transaction log."

@@ -1,0 +1,40 @@
+backend:
+  name: github
+  repo: TrogdorTheMan/TrogdorTheMan.github.io
+  branch: main
+
+site_url: https://TrogdorTheMan.github.io
+media_folder: static/images
+public_folder: /images
+
+collections:
+  - name: posts
+    label: Blog Posts
+    folder: content/posts
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
+      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Description, name: description, widget: string, required: false }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: projects
+    label: Projects
+    folder: content/projects
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
+      - { label: Weight, name: weight, widget: number, value_type: int, default: 10, hint: "Lower numbers sort first on the Projects page" }
+      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Description, name: description, widget: string, required: false }
+      - { label: Body, name: body, widget: markdown }
