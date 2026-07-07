@@ -1,7 +1,7 @@
 ---
 title: Why should I have to pay for an AI job hunting tool when I'm already short on cash?
 date: 2026-06-21
-draft: true
+draft: false
 shareLinkedIn: false
 tags:
   - OpenSource, AI, CareerDevelopment, KonamiCode, Hiring, FOSS
