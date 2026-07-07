@@ -4,7 +4,13 @@ date: 2026-06-23
 draft: false
 shareLinkedIn: false
 tags:
-  - OpenSource, Job Search, Side Project, Claude, AzureAI, JobHunt, FOSS
+  - OpenSource
+  - Job Search
+  - Side Project
+  - Claude
+  - AzureAI
+  - JobHunt
+  - FOSS
 description: Two days into a FOSS AI job tracker and already crushed four milestones!
 ---
 

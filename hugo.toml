@@ -82,6 +82,11 @@ theme = "PaperMod"
 [markup.highlight]
   noClasses = false
 
+# Keep newlines intact inside XML text nodes; the LinkedIn feed needs them
+# for paragraph breaks in the share text.
+[minify]
+  disableXML = true
+
 # Dedicated feed at /posts/linkedin.xml containing only posts with
 # shareLinkedIn: true — this is the feed the Zapier → LinkedIn Zap watches.
 [outputFormats.linkedin]

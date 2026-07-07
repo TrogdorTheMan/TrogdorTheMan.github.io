@@ -4,7 +4,11 @@ date: 2026-06-30
 draft: false
 shareLinkedIn: false
 tags:
-  - WebDevelopment, StaticSite, AIAssistedDevelopment, CivicTech, SeafairPirates
+  - WebDevelopment
+  - StaticSite
+  - AIAssistedDevelopment
+  - CivicTech
+  - SeafairPirates
 description: I rebuilt the Seafair Pirates site off WordPress onto a lightweight static setup with a self-serve officers portal — no CMS to babysit, and running at ~5 cents a month.
 ---
 

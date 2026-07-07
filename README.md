@@ -44,15 +44,15 @@ Post front matter controls visibility and syndication:
 
 - `draft: true` hides the post from the entire site. New CMS posts default to draft.
 - `shareLinkedIn: true` opts the post into LinkedIn sharing. Defaults to off.
-- `tags` are comma-separated in the CMS and become LinkedIn hashtags (see below).
-- `description` is the post summary, the og:description, and the LinkedIn share text.
+- `tags` become LinkedIn hashtags (see below). In the CMS, add them one per item with the add button; comma-separated strings also get split correctly for hashtags.
+- `description` is the post summary and og:description shown on link cards.
 
 ## LinkedIn syndication
 
 Publishing to LinkedIn is opt-in per post and fully automatic once flagged:
 
 1. A post with `draft: false` and `shareLinkedIn: true` appears in a dedicated feed at `/posts/linkedin.xml` (custom `linkedin` output format in `hugo.toml`, template at `layouts/posts/section.linkedin.xml`, enabled in `content/posts/_index.md`).
-2. The feed item description is the post description plus all tags rendered as hashtags on their own line (`#PowerShell #SharePoint`). Non-alphanumeric characters are stripped from tags, so "Azure Functions" becomes `#AzureFunctions`.
+2. The feed item description is the **full post body** converted to plain text (paragraphs preserved, list items become bullets, capped under LinkedIn's 3000-char limit), plus all tags rendered as hashtags on their own line (`#PowerShell #SharePoint`). Non-alphanumeric characters are stripped from tags, so "Azure Functions" becomes `#AzureFunctions`. Don't hand-write hashtags at the end of the body; a trailing hashtag line is stripped and replaced by the tags. XML minification is disabled in `hugo.toml` so the paragraph breaks survive.
 3. A Zapier Zap (RSS trigger on that feed, LinkedIn "Share an Update" action) posts it within about 15 minutes of the deploy finishing. The share text maps the item description; the item link renders the card using the site's og tags.
 
 Flipping `shareLinkedIn` on an older post shares it too; the feed only ever contains flagged posts, so nothing goes out by accident. The pipeline is one-way: deleting or editing a post after Zapier fires does not update or remove the LinkedIn post.

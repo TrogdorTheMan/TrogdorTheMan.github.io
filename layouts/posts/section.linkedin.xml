@@ -6,17 +6,38 @@
     <description>Posts flagged to be shared on LinkedIn</description>
     <atom:link href="{{ .Permalink }}linkedin.xml" rel="self" type="application/rss+xml" />
     {{- range where .RegularPages "Params.sharelinkedin" true }}
-    {{- /* LinkedIn hashtags are alphanumeric only, so "Azure Functions" becomes #AzureFunctions */}}
+    {{- /* LinkedIn hashtags are alphanumeric only, so "Azure Functions" becomes #AzureFunctions.
+           Tags entered as one comma-separated string are split into individual hashtags. */}}
     {{- $hashtags := slice }}
     {{- range .Params.tags }}
-      {{- $hashtags = $hashtags | append (printf "#%s" (replaceRE `[^A-Za-z0-9]` "" .)) }}
+      {{- range split . "," }}
+        {{- with replaceRE `[^A-Za-z0-9]` "" . }}
+          {{- $hashtags = $hashtags | append (printf "#%s" .) }}
+        {{- end }}
+      {{- end }}
     {{- end }}
     <item>
       <title>{{ .Title | plainify }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Description | default .Summary | plainify }}{{ with $hashtags }}&#10;&#10;{{ delimit . " " }}{{ end }}</description>
+      {{- /* Full post body as plain text: paragraphs/headings become blank lines, list
+             items become bullets. plainify collapses real newlines, so break positions
+             are marked with tokens first and converted after. Capped below LinkedIn's
+             3000-char post limit. */}}
+      {{- $body := .Content
+            | replaceRE `(?is)<li[^>]*>` "@@N@@• "
+            | replaceRE `(?is)</(p|h[1-6]|blockquote|ul|ol)>` "@@P@@"
+            | replaceRE `(?is)<br[^>]*>` "@@N@@"
+            | plainify | htmlUnescape }}
+      {{- $body = $body | replaceRE `(\s*@@P@@)+\s*` "\n\n" | replaceRE `(\s*@@N@@)+\s*` "\n" | strings.TrimSpace }}
+      {{- /* If the body ends with its own pasted hashtag line, drop it; the Tags field
+             is the source of truth and gets appended below. */}}
+      {{- if $hashtags }}
+        {{- $body = replaceRE `(?:\s*#[A-Za-z0-9_]+)+\s*$` "" $body }}
+      {{- end }}
+      {{- $body = $body | strings.TrimSpace | truncate 2800 }}
+      <description>{{ $body }}{{ with $hashtags }}&#10;&#10;{{ delimit . " " }}{{ end }}</description>
     </item>
     {{- end }}
   </channel>

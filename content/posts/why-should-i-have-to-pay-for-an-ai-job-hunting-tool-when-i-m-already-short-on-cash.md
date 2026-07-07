@@ -4,7 +4,12 @@ date: 2026-06-21
 draft: false
 shareLinkedIn: false
 tags:
-  - OpenSource, AI, CareerDevelopment, KonamiCode, Hiring, FOSS
+  - OpenSource
+  - AI
+  - CareerDevelopment
+  - KonamiCode
+  - Hiring
+  - FOSS
 description: Fight fire with fire! I'm building a FOSS AI assisted job hunting tool!
 ---
 
