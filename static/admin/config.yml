@@ -18,9 +18,10 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
-      - { label: Draft, name: draft, widget: boolean, default: true }
+      - { label: "Draft (hide from site)", name: draft, widget: boolean, default: true }
+      - { label: "Share on LinkedIn", name: shareLinkedIn, widget: boolean, default: false, hint: "When on (and not a draft), Zapier posts this to LinkedIn within ~15 minutes of deploy" }
       - { label: Tags, name: tags, widget: list, required: false }
-      - { label: Description, name: description, widget: string, required: false }
+      - { label: Description, name: description, widget: string, required: false, hint: "Also becomes the LinkedIn share text" }
       - { label: Body, name: body, widget: markdown }
 
   - name: projects

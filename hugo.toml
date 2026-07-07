@@ -81,3 +81,10 @@ theme = "PaperMod"
 
 [markup.highlight]
   noClasses = false
+
+# Dedicated feed at /posts/linkedin.xml containing only posts with
+# shareLinkedIn: true — this is the feed the Zapier → LinkedIn Zap watches.
+[outputFormats.linkedin]
+  mediaType = "application/rss+xml"
+  baseName = "linkedin"
+  rel = "alternate"
