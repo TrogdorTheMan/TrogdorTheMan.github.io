@@ -28,13 +28,15 @@ automatically exposes your tables as a REST API you can call straight from
 browser JavaScript. No server to run, no backend to write. Its free tier is far
 more than this poll will ever need.
 
-**About the "anon" key:** Supabase issues a public key that is *designed* to
-ship in client-side JavaScript and be committed to a public repo. It is not a
-secret. What protects the data is Row Level Security — the policies in
-`schema.sql` — not hiding the key.
+**About the public key:** Supabase issues a key that is *designed* to ship in
+client-side JavaScript and be committed to a public repo. It is not a secret.
+What protects the data is Row Level Security — the policies in `schema.sql` —
+not hiding the key. Current projects call it the **publishable** key
+(`sb_publishable_...`); older ones call it the **anon** / **public** key
+(`eyJ...`). The app accepts either.
 
-> **Never put the `service_role` key in this repo.** That one *is* secret and
-> bypasses every policy. You want the key labelled **anon** / **public**.
+> **Never put a secret key in this repo** — `sb_secret_...` or the older
+> `service_role` key. Those bypass every policy.
 
 ---
 
@@ -56,16 +58,44 @@ secret. What protects the data is Row Level Security — the policies in
 
 ### 3. Copy your two values into the app
 
-1. Left sidebar → **Project Settings** (gear) → **API**.
-2. Copy **Project URL** — looks like `https://abcdefgh.supabase.co`.
-3. Copy the **anon** / **public** key — a long string starting `eyJ...`.
-4. Open `static/sword/index.html`, find the `CONFIG` block near the top of the
-   `<script>`, and replace both placeholders:
+Supabase reshuffled this part of the dashboard, so the reliable way to get each
+value is below. Ignore older tutorials pointing at "Project Settings -> API".
+
+**The Project URL** is not always shown with a label. It is derived from your
+*project ref*, which is sitting in your browser’s address bar:
+
+```
+https://supabase.com/dashboard/project/abcdefghijklmnop
+                                       ^^^^^^^^^^^^^^^^ this is the ref
+```
+
+Your Project URL is that ref plus `.supabase.co`:
+
+```
+https://abcdefghijklmnop.supabase.co
+```
+
+It is also shown in the **Connect** dialog (button at the top of the dashboard),
+and under **Integrations -> Data API**.
+
+**The key** is under **Settings -> API Keys**. Take the **publishable** key —
+it looks like `sb_publishable_...`. If your project is older and shows legacy
+keys instead, take the one labelled **anon** / **public**, which looks like
+`eyJ...`. Either format works; the app detects which one you pasted and sends
+it the way Supabase requires.
+
+> Do **not** take a **secret** key (`sb_secret_...`) or the **service_role**
+> key. Those bypass every security policy and must never appear in a public
+> repo. The publishable/anon key is meant to be published — that is the point of
+> Row Level Security.
+
+Now open `static/sword/index.html`, find the `CONFIG` block near the top of
+the `<script>`, and replace both placeholders:
 
 ```js
 var CONFIG = {
-  SUPABASE_URL:      'https://abcdefgh.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOi...',
+  SUPABASE_URL:      'https://abcdefghijklmnop.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_AbC123...',
   POLL_ID:           'sword-carving',
   ...
 ```

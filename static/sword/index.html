@@ -422,9 +422,14 @@
   // ==================================================================
   // CONFIG — paste your two Supabase values here.
   //
-  //   Supabase dashboard -> Project Settings -> API
-  //     SUPABASE_URL       = "Project URL"      (https://xxxx.supabase.co)
-  //     SUPABASE_ANON_KEY  = "anon" / "public" key
+  //   SUPABASE_URL — the dashboard URL for your project ends in the
+  //     project ref: supabase.com/dashboard/project/<ref>. Your value is
+  //     https://<ref>.supabase.co  (also shown under Connect, or
+  //     Integrations -> Data API).
+  //
+  //   SUPABASE_ANON_KEY — Settings -> API Keys. Either format works:
+  //     a publishable key "sb_publishable_..." (current), or a legacy
+  //     anon key "eyJ...". NOT a secret or service_role key.
   //
   // The anon key is PUBLIC by design and is meant to be committed. Row
   // Level Security (see sword-poll/schema.sql) is what protects the data.
@@ -607,10 +612,16 @@
 
   function api(path, opts){
     opts = opts || {};
-    var headers = {
-      apikey: CONFIG.SUPABASE_ANON_KEY,
-      Authorization: 'Bearer ' + CONFIG.SUPABASE_ANON_KEY
-    };
+    // Supabase issues two key formats and they are NOT interchangeable
+    // in how they are sent:
+    //   legacy anon key -> a JWT, "eyJ..."; goes in both headers
+    //   publishable key -> "sb_publishable_..."; apikey header ONLY.
+    //     Supabase rejects a publishable key in Authorization: Bearer.
+    // Sending only what each format permits keeps both working.
+    var headers = { apikey: CONFIG.SUPABASE_ANON_KEY };
+    if(CONFIG.SUPABASE_ANON_KEY.indexOf('eyJ') === 0){
+      headers.Authorization = 'Bearer ' + CONFIG.SUPABASE_ANON_KEY;
+    }
     if(opts.body !== undefined) headers['Content-Type'] = 'application/json';
     if(opts.prefer) headers['Prefer'] = opts.prefer;
     if(opts.editorToken) headers['x-editor-token'] = opts.editorToken;
