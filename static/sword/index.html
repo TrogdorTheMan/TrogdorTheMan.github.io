@@ -125,7 +125,10 @@
 
   .card .row{ display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
 
-  .field{ display: flex; flex-direction: column; gap: 6px; flex: 1 1 160px; }
+  .field{ display: flex; flex-direction: column; gap: 6px; flex: 1 1 160px;
+    /* Without this, a native date input's intrinsic minimum width stops the
+       field shrinking, so the row overflows the card on narrow screens. */
+    min-width: 0; }
 
   label{ font-size: 0.78rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.02em; }
 
@@ -389,7 +392,9 @@
     .name-text{ font-size: 0.82rem; }
 
     /* Tap targets. 19px checkboxes in 35px rows are a mis-tap machine. */
-    th, td{ padding: 11px 10px; }
+    /* Date columns 45px -> 38px (~15% narrower). */
+    th, td{ padding: 11px 6.5px; }
+    th.name-col, td.name-col{ padding-left: 10px; padding-right: 10px; }
     input[type="checkbox"]{ width: 24px; height: 24px; }
     .remove-btn{ width: 30px; height: 30px; font-size: 1.1rem; }
 
@@ -410,7 +415,9 @@
   @media (max-width: 400px){
     .wrap{ padding: 22px 12px 76px; }
     th.name-col, td.name-col{ min-width: 104px; }
-    th, td{ padding: 11px 8px; }
+    /* 41px -> 35px (~15% narrower). */
+    th, td{ padding: 11px 5px; }
+    th.name-col, td.name-col{ padding-left: 9px; padding-right: 9px; }
     .chip{ padding: 6px 11px; font-size: 0.78rem; }
   }
 </style>
