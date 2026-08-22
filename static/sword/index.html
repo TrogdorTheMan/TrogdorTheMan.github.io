@@ -337,6 +337,82 @@
   tbody tr.mine th.name-col{ box-shadow: 1px 0 0 var(--border), inset 3px 0 0 var(--accent); }
 
   .loading-row td{ color: var(--text-muted); font-style: italic; padding: 22px 12px; text-align: center; white-space: normal; }
+
+  /* ---- Month filter -------------------------------------------------
+     38 weekend dates is ~1700px of grid. On a phone that's 4-5 columns
+     visible and over 1300px of sideways swiping to reach December, so
+     the columns are filtered to one month at a time. */
+  .date-filter{
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .chip{
+    font: inherit; font-size: 0.82rem; font-weight: 600;
+    background: var(--surface); color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; cursor: pointer; white-space: nowrap;
+    transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+  }
+  .chip:hover{ color: var(--text); border-color: var(--text-muted); }
+  .chip[aria-pressed="true"]{
+    background: var(--accent); color: #fffaf2; border-color: var(--accent);
+  }
+  .chip:focus-visible{ outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+  .chip .chip-n{ opacity: 0.65; font-weight: 500; margin-left: 5px; font-variant-numeric: tabular-nums; }
+
+  .filter-note{
+    font-size: 0.78rem; color: var(--text-muted); margin: 0 0 14px;
+  }
+  .filter-note button{
+    font: inherit; font-size: inherit; font-weight: 600;
+    background: none; border: none; padding: 0;
+    color: var(--accent-strong); cursor: pointer; text-decoration: underline;
+  }
+
+  /* Toast sat at bottom:24px, directly on top of the sticky save bar.
+     Lift it clear of that bar. */
+  .toast{ bottom: 84px; }
+
+  /* ---- Phones -------------------------------------------------------- */
+  @media (max-width: 720px){
+    .wrap{ padding: 26px 16px 80px; }
+    h1{ font-size: clamp(1.6rem, 6.5vw, 2rem); }
+    .subtitle{ font-size: 0.95rem; }
+    .cards-row{ gap: 12px; margin-bottom: 16px; }
+    .card{ padding: 15px 16px; gap: 10px; border-radius: 12px; }
+    .save-bar{ padding: 10px 13px; margin-bottom: 16px; border-radius: 10px; }
+    .save-state{ font-size: 0.82rem; }
+    .summary{ padding: 16px 16px; border-radius: 12px; }
+
+    /* Narrower name column: at 160px it ate 47% of a 390px screen. */
+    th.name-col, td.name-col{ min-width: 118px; }
+    .name-text{ font-size: 0.82rem; }
+
+    /* Tap targets. 19px checkboxes in 35px rows are a mis-tap machine. */
+    th, td{ padding: 11px 10px; }
+    input[type="checkbox"]{ width: 24px; height: 24px; }
+    .remove-btn{ width: 30px; height: 30px; font-size: 1.1rem; }
+
+    /* The date x was 17px and hung outside its cell — easy to hit by
+       accident while swiping. Bring it inside and enlarge it. */
+    .date-head{ padding-top: 20px; }
+    .remove-date-btn{ width: 26px; height: 26px; top: -8px; right: 50%;
+      transform: translateX(50%); font-size: 0.9rem; }
+    .remove-date-btn.confirming{ transform: translateX(50%); font-size: 0.55rem; }
+
+    .rank-count{ min-width: 52px; font-size: 0.78rem; }
+    .rank-label{ font-size: 0.8rem; }
+    .toast{ bottom: 78px; left: 12px; right: 12px; transform: translateY(10px);
+      max-width: none; }
+    .toast.show{ transform: translateY(0); }
+  }
+
+  @media (max-width: 400px){
+    .wrap{ padding: 22px 12px 76px; }
+    th.name-col, td.name-col{ min-width: 104px; }
+    th, td{ padding: 11px 8px; }
+    .chip{ padding: 6px 11px; font-size: 0.78rem; }
+  }
 </style>
 </head>
 <body>
@@ -388,6 +464,9 @@
   </div>
 
   <div class="err-detail" id="errDetail" role="alert"></div>
+
+  <div class="date-filter" id="dateFilter" role="group" aria-label="Filter dates by month"></div>
+  <p class="filter-note" id="filterNote" hidden></p>
 
   <div class="table-shell">
     <div class="table-scroll">
@@ -471,6 +550,16 @@
   function formatLabel(s){ return dowAbbrev(s) + ' ' + monthDay(s); }
   function isWeekend(s){ var g = parseLocalDate(s).getDay(); return g === 0 || g === 6; }
   function isDateStr(s){ return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+  function monthKey(s){ return s.slice(0, 7); }
+  function monthName(key){
+    var p = key.split('-');
+    return MONTHS[Number(p[1]) - 1];
+  }
+  // Local "today" as YYYY-MM-DD, so date strings compare lexically.
+  function todayStr(){
+    var d = new Date(), p = function(n){ return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
 
   function uid(){
     if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
@@ -489,6 +578,8 @@
   // ------------------------------------------------------------------
   // DOM
   // ------------------------------------------------------------------
+  var dateFilter     = document.getElementById('dateFilter');
+  var filterNote     = document.getElementById('filterNote');
   var dateHeaderRow  = document.getElementById('dateHeaderRow');
   var body           = document.getElementById('pollBody');
   var table          = document.getElementById('pollTable');
@@ -521,6 +612,13 @@
   var voteTimers = {};       // participant id -> debounce timer
   var votePending = {};      // participant id -> unsaved local edits (shielded from refresh)
   var datesPending = false;  // a poll.dates write is unsaved or in flight
+
+  // ---- which date columns are on screen -----------------------------
+  // The full date list stays in state.dates and every tally uses it; this
+  // only decides which COLUMNS are drawn.
+  var monthFilter = 'all';   // 'all' or a 'YYYY-MM' prefix
+  var showPast = false;      // past dates are hidden until asked for
+  var view = [];             // the dates actually rendered
   var refreshFails = 0;
 
   // ---- ownership: id -> editor_token, for rows this browser created ----
@@ -760,11 +858,92 @@
   // ------------------------------------------------------------------
   // Rendering — pure functions of `state`
   // ------------------------------------------------------------------
-  function render(){ renderHeader(); renderBody(); renderFooterAndSummary(); }
+  function render(){
+    computeView();
+    renderFilter();
+    renderHeader();
+    renderBody();
+    renderFooterAndSummary();
+  }
+
+  // Decide which columns are drawn. state.dates is never modified here.
+  function computeView(){
+    var today = todayStr();
+    var months = {};
+    state.dates.forEach(function(d){ months[monthKey(d)] = true; });
+
+    // A filter pointing at a month that no longer exists falls back to all.
+    if(monthFilter !== 'all' && !months[monthFilter]) monthFilter = 'all';
+
+    view = state.dates.filter(function(d){
+      if(!showPast && d < today) return false;
+      if(monthFilter !== 'all' && monthKey(d) !== monthFilter) return false;
+      return true;
+    });
+
+    // Never render an empty grid just because everything is in the past.
+    if(view.length === 0 && !showPast && state.dates.length){
+      var anyFuture = state.dates.some(function(d){ return d >= today; });
+      if(!anyFuture){ showPast = true; return computeView(); }
+    }
+  }
+
+  function renderFilter(){
+    var today = todayStr();
+    var counts = {}, order = [];
+    state.dates.forEach(function(d){
+      if(!showPast && d < today) return;
+      var k = monthKey(d);
+      if(counts[k] === undefined){ counts[k] = 0; order.push(k); }
+      counts[k]++;
+    });
+
+    var total = order.reduce(function(a, k){ return a + counts[k]; }, 0);
+
+    // One month's worth of dates needs no filter at all.
+    if(order.length < 2){ dateFilter.innerHTML = ''; }
+    else{
+      var html = '<button class="chip" type="button" data-month="all" aria-pressed="' +
+        (monthFilter === 'all') + '">All<span class="chip-n">' + total + '</span></button>';
+      order.forEach(function(k){
+        html += '<button class="chip" type="button" data-month="' + k + '" aria-pressed="' +
+          (monthFilter === k) + '">' + monthName(k) +
+          '<span class="chip-n">' + counts[k] + '</span></button>';
+      });
+      dateFilter.innerHTML = html;
+    }
+
+    var hidden = state.dates.filter(function(d){ return d < today; }).length;
+    if(hidden > 0){
+      filterNote.hidden = false;
+      filterNote.innerHTML = showPast
+        ? hidden + ' past ' + (hidden === 1 ? 'date is' : 'dates are') +
+          ' shown. <button type="button" data-past="hide">Hide them</button>'
+        : hidden + ' past ' + (hidden === 1 ? 'date is' : 'dates are') +
+          ' hidden. <button type="button" data-past="show">Show anyway</button>';
+    }else{
+      filterNote.hidden = true;
+      filterNote.innerHTML = '';
+    }
+  }
+
+  dateFilter.addEventListener('click', function(e){
+    var btn = e.target.closest('.chip');
+    if(!btn) return;
+    monthFilter = btn.getAttribute('data-month');
+    render();
+  });
+
+  filterNote.addEventListener('click', function(e){
+    var btn = e.target.closest('button[data-past]');
+    if(!btn) return;
+    showPast = btn.getAttribute('data-past') === 'show';
+    render();
+  });
 
   function renderHeader(){
     var html = '<th class="name-col">Name</th>';
-    state.dates.forEach(function(d){
+    view.forEach(function(d){
       html += '<th class="' + (isWeekend(d) ? 'weekend' : '') + '" data-date="' + d + '">' +
         '<div class="date-head">' +
           (isReadOnly ? '' :
@@ -781,7 +960,7 @@
     var tr = document.createElement('tr');
     tr.className = cls;
     var td = document.createElement('td');
-    td.setAttribute('colspan', String(state.dates.length + 1));
+    td.setAttribute('colspan', String(view.length + 1));
     td.textContent = text;
     tr.appendChild(td);
     return tr;
@@ -792,6 +971,10 @@
 
     if(!loaded){
       body.appendChild(placeholderRow('loading-row', 'Loading the poll…'));
+      return;
+    }
+    if(view.length === 0){
+      body.appendChild(placeholderRow('empty-row', 'No dates to show here — pick another month.'));
       return;
     }
     if(state.participants.length === 0){
@@ -821,7 +1004,7 @@
       nameTd.querySelector('.name-text').textContent = p.name;
       tr.appendChild(nameTd);
 
-      state.dates.forEach(function(d){
+      view.forEach(function(d){
         var td = document.createElement('td');
         if(isWeekend(d)) td.classList.add('weekend');
         var cb = document.createElement('input');
@@ -842,15 +1025,24 @@
 
   function renderFooterAndSummary(){
     var total = state.participants.length;
-    var html = '<td class="name-col">Votes</td>';
-    var counts = state.dates.map(function(d){
-      var n = state.participants.reduce(function(a,p){
+    var tally = function(d){
+      return state.participants.reduce(function(a,p){
         return a + (p.votes.indexOf(d) !== -1 ? 1 : 0);
       }, 0);
-      html += '<td class="' + (isWeekend(d) ? 'weekend' : '') + '" data-date="' + d + '">' + n + '</td>';
-      return { date: d, count: n };
+    };
+
+    // Footer follows the visible columns...
+    var html = '<td class="name-col">Votes</td>';
+    view.forEach(function(d){
+      html += '<td class="' + (isWeekend(d) ? 'weekend' : '') + '" data-date="' + d + '">' +
+        tally(d) + '</td>';
     });
     footRow.innerHTML = html;
+
+    // ...but Top picks always ranks EVERY date. Filtering is a way to see
+    // the grid, not a way to change what wins — and each row is labelled
+    // with its full date, so a global ranking reads unambiguously.
+    var counts = state.dates.map(function(d){ return { date: d, count: tally(d) }; });
 
     if(total === 0){
       countLine.textContent = 'No votes yet';
@@ -989,6 +1181,9 @@
           state.dates = remote;
           datesPending = false;
           dateInput.value = '';
+          // Jump to wherever the new date landed so it isn't added off-screen.
+          if(monthFilter !== 'all') monthFilter = monthKey(val);
+          if(val < todayStr()) showPast = true;
           showHint(dateHint, 'Added ' + formatLabel(val) + '.', false);
           renderKeepingFocus();
         });
