@@ -617,6 +617,7 @@
   // The full date list stays in state.dates and every tally uses it; this
   // only decides which COLUMNS are drawn.
   var monthFilter = 'all';   // 'all' or a 'YYYY-MM' prefix
+  var filterPicked = false;  // has a default been chosen (or a chip tapped)?
   var showPast = false;      // past dates are hidden until asked for
   var view = [];             // the dates actually rendered
   var refreshFails = 0;
@@ -866,9 +867,38 @@
     renderFooterAndSummary();
   }
 
+  // Opening the poll on the current month beats opening it on all 38
+  // columns. Falls forward if the current month has nothing left to vote
+  // on, so the default never lands on an empty grid.
+  function defaultMonth(){
+    var today = todayStr();
+    var cur = monthKey(today);
+    var hasCurrent = state.dates.some(function(d){
+      return monthKey(d) === cur && d >= today;
+    });
+    if(hasCurrent) return cur;
+
+    // Otherwise the month holding the next date still to come.
+    var next = null;
+    state.dates.forEach(function(d){
+      if(d >= today && (next === null || d < next)) next = d;
+    });
+    if(next) return monthKey(next);
+
+    return 'all';   // nothing upcoming at all
+  }
+
   // Decide which columns are drawn. state.dates is never modified here.
   function computeView(){
     var today = todayStr();
+
+    // Pick the opening month once, on the first render that has data.
+    // After that the person's own chip choice stands.
+    if(!filterPicked && state.dates.length){
+      filterPicked = true;
+      monthFilter = defaultMonth();
+    }
+
     var months = {};
     state.dates.forEach(function(d){ months[monthKey(d)] = true; });
 
@@ -931,6 +961,7 @@
     var btn = e.target.closest('.chip');
     if(!btn) return;
     monthFilter = btn.getAttribute('data-month');
+    filterPicked = true;
     render();
   });
 
