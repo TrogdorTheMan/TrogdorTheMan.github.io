@@ -1,0 +1,1213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sword Carving Days with Bill</title>
+<meta name="description" content="Weekend availability poll for sword carving days with Bill. No login needed." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style id="app-style">
+  :root{
+    --bg: #f5efe3;
+    --surface: #fffbf5;
+    --surface-2: #efe6d4;
+    --text: #2e2419;
+    --text-muted: #7a6b57;
+    --accent: #b5651d;
+    --accent-strong: #8f4c14;
+    --accent-soft: #e8c9a0;
+    --border: #ddccae;
+    --weekend-tint: #f0e5d1;
+    --danger: #a4432b;
+    --ok: #4f7a3a;
+    --shadow: 0 1px 2px rgba(46,36,25,0.06), 0 8px 24px rgba(46,36,25,0.06);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #1c1712;
+      --surface: #241e17;
+      --surface-2: #2c241a;
+      --text: #f0e6d6;
+      --text-muted: #b3a189;
+      --accent: #d98a3d;
+      --accent-strong: #eda65e;
+      --accent-soft: #4a3620;
+      --border: #423624;
+      --weekend-tint: #29221a;
+      --danger: #e08265;
+      --ok: #8fc06a;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.3);
+    }
+  }
+
+  :root[data-theme="dark"]{
+    --bg: #1c1712;
+    --surface: #241e17;
+    --surface-2: #2c241a;
+    --text: #f0e6d6;
+    --text-muted: #b3a189;
+    --accent: #d98a3d;
+    --accent-strong: #eda65e;
+    --accent-soft: #4a3620;
+    --border: #423624;
+    --weekend-tint: #29221a;
+    --danger: #e08265;
+    --ok: #8fc06a;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 40px 24px 96px; }
+
+  header.page-head{ margin-bottom: 28px; }
+
+  h1{
+    font-family: "Fraunces", Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    line-height: 1.1;
+    margin: 0 0 10px;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle{ font-size: 1rem; color: var(--text-muted); max-width: 56ch; line-height: 1.55; margin: 0; }
+
+  .eyebrow{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--accent-strong); margin-bottom: 12px;
+  }
+  .eyebrow::before{
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+  }
+
+  .banner{
+    display: none; align-items: flex-start; gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-left: 3px solid var(--danger); color: var(--text);
+    padding: 12px 16px; border-radius: 8px; font-size: 0.9rem;
+    margin-bottom: 22px; line-height: 1.5;
+  }
+  .banner.show{ display: flex; }
+  .banner code{
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.82em; background: var(--bg); padding: 1px 5px;
+    border-radius: 4px; border: 1px solid var(--border);
+  }
+
+  .cards-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 720px){ .cards-row{ grid-template-columns: 1fr; } }
+
+  .card{
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow); padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .card h3{ font-family: "Fraunces", Georgia, serif; font-size: 1rem; font-weight: 600; margin: 0; }
+
+  .card .row{ display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+
+  .field{ display: flex; flex-direction: column; gap: 6px; flex: 1 1 160px; }
+
+  label{ font-size: 0.78rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.02em; }
+
+  input[type="text"], input[type="date"]{
+    font: inherit; font-size: 0.95rem; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text); width: 100%;
+  }
+  input[type="text"]:focus-visible, input[type="date"]:focus-visible{
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+  input:disabled{ opacity: 0.55; cursor: not-allowed; }
+
+  button.primary, button.save{
+    font: inherit; font-weight: 600; font-size: 0.9rem;
+    background: var(--accent); color: #fffaf2; border: none;
+    padding: 11px 18px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+    transition: background 0.15s ease, transform 0.05s ease;
+  }
+  button.primary:hover, button.save:hover{ background: var(--accent-strong); }
+  button.primary:active, button.save:active{ transform: translateY(1px); }
+  button.primary:focus-visible, button.save:focus-visible{ outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+  button.primary:disabled, button.save:disabled{ opacity: 0.45; cursor: not-allowed; }
+
+  .hint{ font-size: 0.78rem; color: var(--text-muted); }
+  .hint.error{ color: var(--danger); font-weight: 600; }
+
+  /* Save bar */
+  .save-bar{
+    position: sticky; bottom: 0; z-index: 12;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: var(--shadow);
+    padding: 12px 16px; margin-bottom: 22px;
+  }
+  .save-state{ font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .save-state .dot{ width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: 0 0 auto; }
+  .save-state.dirty .dot{ background: var(--accent); }
+  .save-state.busy .dot{ background: var(--text-muted); }
+  .save-state .sub{ font-weight: 500; color: var(--text-muted); font-size: 0.82rem; }
+
+  /* Table */
+  .table-shell{
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 22px;
+  }
+  .table-scroll{ overflow-x: auto; overflow-y: visible; }
+
+  table{ border-collapse: separate; border-spacing: 0; width: 100%; font-size: 0.88rem; }
+
+  th, td{ padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+
+  thead th{
+    background: var(--surface-2); font-weight: 600; color: var(--text);
+    position: sticky; top: 0; z-index: 2; vertical-align: middle;
+  }
+
+  .date-head{
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    position: relative; padding-top: 14px;
+  }
+  .date-head .dow{
+    font-size: 0.68rem; color: var(--text-muted); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .date-head .date-label{ font-size: 0.82rem; font-weight: 600; }
+
+  .remove-date-btn{
+    position: absolute; top: -6px; right: -4px; width: 17px; height: 17px;
+    border-radius: 5px; border: 1px solid transparent; background: transparent;
+    color: var(--text-muted); font-size: 0.72rem; line-height: 1; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .remove-date-btn:hover{ background: var(--surface); border-color: var(--border); color: var(--danger); }
+  .remove-date-btn.confirming{
+    background: var(--danger); color: #fff; border-color: var(--danger);
+    font-size: 0.58rem; font-weight: 700; width: auto; padding: 0 5px; white-space: nowrap;
+  }
+
+  th.weekend, td.weekend{ background: var(--weekend-tint); }
+  thead th.weekend{ background: var(--surface-2); }
+
+  th.name-col, td.name-col{
+    position: sticky; left: 0; z-index: 1; background: var(--surface);
+    text-align: left; min-width: 160px; box-shadow: 1px 0 0 var(--border);
+  }
+  thead th.name-col{ z-index: 3; background: var(--surface-2); }
+
+  .name-cell{ display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .name-text{ font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+
+  .remove-btn{
+    flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px;
+    border: 1px solid transparent; background: transparent; color: var(--text-muted);
+    font-size: 0.95rem; line-height: 1; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .remove-btn:hover{ background: var(--surface-2); border-color: var(--border); color: var(--danger); }
+  .remove-btn.confirming{
+    background: var(--danger); color: #fff; border-color: var(--danger);
+    font-size: 0.62rem; font-weight: 700; width: auto; padding: 0 8px;
+  }
+  .remove-btn.hidden-btn{ visibility: hidden; }
+
+  input[type="checkbox"]{ width: 19px; height: 19px; accent-color: var(--accent); cursor: pointer; }
+
+  tbody tr:last-child td{ border-bottom: none; }
+
+  .empty-row td{
+    color: var(--text-muted); font-style: italic; padding: 22px 12px;
+    text-align: center; white-space: normal;
+  }
+
+  tfoot td{
+    border-bottom: none; border-top: 1px solid var(--border);
+    background: var(--surface-2); font-weight: 600; color: var(--accent-strong);
+    font-variant-numeric: tabular-nums;
+  }
+  tfoot td.name-col{
+    background: var(--surface-2); color: var(--text-muted); font-weight: 600;
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* Summary */
+  .summary{
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow); padding: 20px 22px;
+  }
+  .summary h2{ font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; font-weight: 600; margin: 0 0 4px; }
+  .summary .count-line{ font-size: 0.85rem; color: var(--text-muted); margin: 0 0 16px; }
+
+  .rank-list{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .rank-row{ display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 10px; }
+  .rank-num{ font-family: "Fraunces", Georgia, serif; font-weight: 600; color: var(--text-muted); font-size: 0.95rem; }
+  .rank-row.top .rank-num{ color: var(--accent-strong); }
+
+  .rank-bar-track{
+    background: var(--surface-2); border-radius: 6px; height: 26px;
+    position: relative; overflow: hidden; display: flex; align-items: center;
+  }
+  .rank-bar-fill{ position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-soft); border-radius: 6px; }
+  .rank-row.top .rank-bar-fill{ background: var(--accent); }
+  .rank-label{ position: relative; padding: 0 10px; font-size: 0.85rem; font-weight: 600; color: var(--text); z-index: 1; }
+  .rank-row.top .rank-label{ color: #fffaf2; }
+
+  .rank-count{
+    font-size: 0.82rem; font-weight: 600; color: var(--text-muted);
+    font-variant-numeric: tabular-nums; min-width: 64px; text-align: right;
+  }
+
+  .summary-empty{ color: var(--text-muted); font-size: 0.9rem; font-style: italic; }
+
+  footer.credit{ text-align: center; font-size: 0.76rem; color: var(--text-muted); margin-top: 26px; }
+
+  .toast{
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px);
+    background: var(--text); color: var(--bg); padding: 11px 18px; border-radius: 10px;
+    font-size: 0.85rem; font-weight: 500; box-shadow: var(--shadow);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 30; max-width: min(92vw, 520px); text-align: center; line-height: 1.45;
+  }
+  .toast.show{ opacity: 1; transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce){ .toast{ transition: none; } }
+</style>
+
+<style>
+  /* ---- Additions for the Supabase-backed build ---------------------- */
+
+  /* Save-state bar: now a status readout, not a Save button. */
+  .save-bar{ justify-content: space-between; }
+  .save-state.ok   .dot{ background: var(--ok); }
+  .save-state.busy .dot{ background: var(--accent); animation: pulse 1s ease-in-out infinite; }
+  .save-state.err  .dot{ background: var(--danger); }
+  .save-state.err  { color: var(--danger); }
+
+  @keyframes pulse{ 0%,100%{ opacity: 1; } 50%{ opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce){ .save-state.busy .dot{ animation: none; } }
+
+  button.retry{
+    font: inherit; font-weight: 600; font-size: 0.82rem;
+    background: var(--danger); color: #fff; border: none;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+  }
+  button.retry:focus-visible{ outline: 2px solid var(--text); outline-offset: 2px; }
+  button.retry[hidden]{ display: none; }
+
+  /* Full error detail (HTTP status + Supabase message) stays on screen. */
+  .err-detail{
+    display: none; margin: -12px 0 22px; padding: 12px 16px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-left: 3px solid var(--danger); border-radius: 8px;
+    font-size: 0.82rem; line-height: 1.5; color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .err-detail.show{ display: block; }
+
+  /* Rows you don't own render inert. */
+  input[type="checkbox"]:disabled{ cursor: not-allowed; opacity: 0.4; }
+
+  .you-tag{
+    flex: 0 0 auto; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent-strong);
+    border: 1px solid var(--accent-soft); background: var(--accent-soft);
+    border-radius: 999px; padding: 2px 6px;
+  }
+  :root[data-theme="dark"] .you-tag, :root:not([data-theme="light"]) .you-tag{ color: var(--accent-strong); }
+
+  tbody tr.mine th.name-col{ box-shadow: 1px 0 0 var(--border), inset 3px 0 0 var(--accent); }
+
+  .loading-row td{ color: var(--text-muted); font-style: italic; padding: 22px 12px; text-align: center; white-space: normal; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Weekend availability poll</div>
+    <h1>Sword Carving Days with Bill</h1>
+    <p class="subtitle">Check off every Saturday or Sunday you could make it out. Once everyone's weighed in, we'll go with whichever date the most people can do or schedule multiple days. Also, please feel free to add dates beyond. Bill, please ping Cory if you need to axe a day.</p>
+  </header>
+
+  <div class="banner" id="readonlyBanner">
+    <span>&#9888;&#65039;</span>
+    <span id="readonlyText">This view can't save changes.</span>
+  </div>
+
+  <div class="cards-row">
+    <div class="card">
+      <h3>Add yourself</h3>
+      <div class="row">
+        <div class="field">
+          <label for="nameInput">Your name</label>
+          <input type="text" id="nameInput" placeholder="e.g. Trogdor" maxlength="40" autocomplete="off" />
+        </div>
+        <button class="primary" id="joinBtn" type="button">Add me</button>
+      </div>
+      <p class="hint" id="nameHint">Adds a row below with a checkbox for every date.</p>
+    </div>
+
+    <div class="card">
+      <h3>Add a date</h3>
+      <div class="row">
+        <div class="field">
+          <label for="dateInput">New option</label>
+          <input type="date" id="dateInput" />
+        </div>
+        <button class="primary" id="addDateBtn" type="button">Add date</button>
+      </div>
+      <p class="hint" id="dateHint">Doesn't have to be a weekend &mdash; add any date worth voting on.</p>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <span class="save-state ok" id="saveState">
+      <span class="dot"></span><span id="saveStateText">Loading&hellip;</span>
+    </span>
+    <button class="retry" id="retryBtn" type="button" hidden>Retry</button>
+  </div>
+
+  <div class="err-detail" id="errDetail" role="alert"></div>
+
+  <div class="table-shell">
+    <div class="table-scroll">
+      <table id="pollTable">
+        <thead>
+          <tr id="dateHeaderRow"></tr>
+        </thead>
+        <tbody id="pollBody"></tbody>
+        <tfoot>
+          <tr id="footRow"></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="summary">
+    <h2>Top picks</h2>
+    <p class="count-line" id="countLine">No votes yet</p>
+    <ul class="rank-list" id="rankList"></ul>
+  </div>
+
+  <footer class="credit">Everyone who opens this link can add themselves, add dates, and check availability &mdash; no login needed. Your picks save automatically.</footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ==================================================================
+  // CONFIG — paste your two Supabase values here.
+  //
+  //   Supabase dashboard -> Project Settings -> API
+  //     SUPABASE_URL       = "Project URL"      (https://xxxx.supabase.co)
+  //     SUPABASE_ANON_KEY  = "anon" / "public" key
+  //
+  // The anon key is PUBLIC by design and is meant to be committed. Row
+  // Level Security (see sword-poll/schema.sql) is what protects the data.
+  // NEVER paste the service_role key here — that one bypasses everything.
+  // ==================================================================
+  var CONFIG = {
+    SUPABASE_URL:      'PASTE_YOUR_SUPABASE_URL_HERE',
+    SUPABASE_ANON_KEY: 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE',
+    POLL_ID:           'sword-carving',
+
+    // Edits and deletes are gated on a secret token. Two ways to send it:
+    //
+    //   false -> send it as an `x-editor-token` request header, checked by
+    //            an RLS policy. This is the primary design.
+    //   true  -> call the set_votes / remove_participant SQL functions
+    //            instead, passing the token as an argument.
+    //
+    // Flip to true if writes fail with a CORS error naming the
+    // x-editor-token header. schema.sql creates both paths.
+    USE_RPC: false,
+
+    REFRESH_MS: 15000,
+    DEBOUNCE_MS: 400
+  };
+
+  // ==================================================================
+  // Date helpers.
+  //
+  // new Date('2026-08-22') parses as UTC and renders as the previous day
+  // in negative-offset timezones (i.e. all of North America). Always split
+  // on '-' and build a local date. Do not "simplify" this away.
+  // ==================================================================
+  var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function parseLocalDate(s){ var p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+  function dowAbbrev(s){ return DOW[parseLocalDate(s).getDay()]; }
+  function monthDay(s){ var d = parseLocalDate(s); return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function formatLabel(s){ return dowAbbrev(s) + ' ' + monthDay(s); }
+  function isWeekend(s){ var g = parseLocalDate(s).getDay(); return g === 0 || g === 6; }
+  function isDateStr(s){ return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+
+  function uid(){
+    if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : ((r & 0x3) | 0x8)).toString(16);
+    });
+  }
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function sel(s){
+    return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&');
+  }
+
+  // ------------------------------------------------------------------
+  // DOM
+  // ------------------------------------------------------------------
+  var dateHeaderRow  = document.getElementById('dateHeaderRow');
+  var body           = document.getElementById('pollBody');
+  var table          = document.getElementById('pollTable');
+  var nameInput      = document.getElementById('nameInput');
+  var joinBtn        = document.getElementById('joinBtn');
+  var nameHint       = document.getElementById('nameHint');
+  var dateInput      = document.getElementById('dateInput');
+  var addDateBtn     = document.getElementById('addDateBtn');
+  var dateHint       = document.getElementById('dateHint');
+  var footRow        = document.getElementById('footRow');
+  var countLine      = document.getElementById('countLine');
+  var rankList       = document.getElementById('rankList');
+  var readonlyBanner = document.getElementById('readonlyBanner');
+  var readonlyText   = document.getElementById('readonlyText');
+  var toastEl        = document.getElementById('toast');
+  var saveState      = document.getElementById('saveState');
+  var saveStateText  = document.getElementById('saveStateText');
+  var retryBtn       = document.getElementById('retryBtn');
+  var errDetail      = document.getElementById('errDetail');
+
+  // ------------------------------------------------------------------
+  // State
+  // ------------------------------------------------------------------
+  var state = { dates: [], participants: [] };   // participants: {id, name, votes[]}
+  var isReadOnly = false;
+  var loaded = false;
+
+  var inflight = 0;          // writes currently awaiting a response
+  var lastFailed = null;     // retry closure for the most recent failure
+  var voteTimers = {};       // participant id -> debounce timer
+  var votePending = {};      // participant id -> unsaved local edits (shielded from refresh)
+  var datesPending = false;  // a poll.dates write is unsaved or in flight
+  var refreshFails = 0;
+
+  // ---- ownership: id -> editor_token, for rows this browser created ----
+  // The server never sends editor_token back (schema.sql revokes SELECT on
+  // that column), so this map is the only record of what you own. Clearing
+  // browser data loses edit rights; you can always add a fresh row.
+  var OWN_KEY = 'swordPollTokens.v1';
+  function getTokens(){
+    try{ return JSON.parse(localStorage.getItem(OWN_KEY)) || {}; }catch(e){ return {}; }
+  }
+  function tokenFor(id){ return getTokens()[id] || null; }
+  function ownsRow(id){ return !!tokenFor(id); }
+  function rememberToken(id, tok){
+    try{ var m = getTokens(); m[id] = tok; localStorage.setItem(OWN_KEY, JSON.stringify(m)); }catch(e){}
+  }
+  function forgetToken(id){
+    try{ var m = getTokens(); delete m[id]; localStorage.setItem(OWN_KEY, JSON.stringify(m)); }catch(e){}
+  }
+
+  // ------------------------------------------------------------------
+  // Status indicator. Success is only ever reported after a 2xx —
+  // never optimistically.
+  // ------------------------------------------------------------------
+  function setSave(kind, text){
+    saveState.className = 'save-state ' + kind;
+    saveStateText.textContent = text;
+    retryBtn.hidden = (kind !== 'err') || !lastFailed;
+  }
+  function clearError(){
+    errDetail.classList.remove('show');
+    errDetail.textContent = '';
+    lastFailed = null;
+    retryBtn.hidden = true;
+  }
+  function showError(err, retryFn){
+    lastFailed = retryFn || null;
+    errDetail.textContent = (err && err.message) ? err.message : String(err);
+    errDetail.classList.add('show');
+    setSave('err', lastFailed ? 'Couldn\u2019t save \u2014 retry' : 'Couldn\u2019t save');
+  }
+  retryBtn.addEventListener('click', function(){
+    if(!lastFailed) return;
+    var fn = lastFailed;
+    lastFailed = null;
+    retryBtn.hidden = true;
+    fn();
+  });
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(function(){ toastEl.classList.remove('show'); }, 6000);
+  }
+
+  function setReadOnly(message){
+    isReadOnly = true;
+    readonlyText.innerHTML = message;
+    readonlyBanner.classList.add('show');
+    nameInput.disabled = true;
+    joinBtn.disabled = true;
+    dateInput.disabled = true;
+    addDateBtn.disabled = true;
+    lastFailed = null;
+    setSave('err', 'Read-only');
+    render();
+  }
+
+  // Wrap every write: shows Saving..., then Saved on 2xx, or the real
+  // error (HTTP status + Supabase's own message) on failure.
+  function run(fn){
+    inflight++;
+    setSave('busy', 'Saving\u2026');
+    return Promise.resolve().then(fn).then(function(){
+      inflight--;
+      if(inflight === 0){ clearError(); setSave('ok', 'Saved'); }
+    }, function(err){
+      inflight--;
+      showError(err, function(){ return run(fn); });
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // API — PostgREST directly, no client library.
+  // ------------------------------------------------------------------
+  var configured =
+    CONFIG.SUPABASE_URL.indexOf('PASTE_') !== 0 &&
+    CONFIG.SUPABASE_ANON_KEY.indexOf('PASTE_') !== 0;
+
+  function api(path, opts){
+    opts = opts || {};
+    var headers = {
+      apikey: CONFIG.SUPABASE_ANON_KEY,
+      Authorization: 'Bearer ' + CONFIG.SUPABASE_ANON_KEY
+    };
+    if(opts.body !== undefined) headers['Content-Type'] = 'application/json';
+    if(opts.prefer) headers['Prefer'] = opts.prefer;
+    if(opts.editorToken) headers['x-editor-token'] = opts.editorToken;
+
+    return fetch(CONFIG.SUPABASE_URL + '/rest/v1/' + path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined
+    }).catch(function(e){
+      var err = new Error(
+        'Network error \u2014 ' + ((e && e.message) || e) + '\n' +
+        'If this says "Failed to fetch": check the Supabase URL is right, that ' +
+        'you are online, and that no extension is blocking the request.'
+      );
+      err.status = 0;
+      throw err;
+    }).then(function(res){
+      return res.text().then(function(text){
+        var data = null;
+        if(text){ try{ data = JSON.parse(text); }catch(e){ data = text; } }
+        if(!res.ok){
+          var msg = (data && (data.message || data.hint || data.details)) ||
+                    (typeof data === 'string' && text ? text : '') || res.statusText;
+          var extra = (data && data.details && data.message) ? '\n' + data.details : '';
+          var err = new Error('HTTP ' + res.status + ' \u2014 ' + msg + extra);
+          err.status = res.status;
+          err.payload = data;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  // A write blocked by RLS comes back 200 with an empty array, NOT an
+  // error. Silently ignoring that is the exact failure this rebuild
+  // exists to avoid, so every gated write asserts a row came back.
+  function assertChanged(rows, what){
+    if(Array.isArray(rows) && rows.length > 0) return;
+    var err = new Error(
+      'The database accepted the request but changed 0 rows (' + what + ').\n' +
+      'A Row Level Security policy rejected it \u2014 usually this browser no ' +
+      'longer holds the edit token for that row.'
+    );
+    err.status = 403;
+    throw err;
+  }
+
+  function noToken(){
+    var err = new Error(
+      'This browser does not hold the edit token for that row, so it cannot ' +
+      'change it. Add yourself again as a new row.'
+    );
+    err.status = 403;
+    return err;
+  }
+
+  var POLL = encodeURIComponent(CONFIG.POLL_ID);
+
+  function loadPoll(){
+    return api('polls?id=eq.' + POLL + '&select=dates').then(function(rows){
+      if(!Array.isArray(rows) || rows.length === 0){
+        var err = new Error(
+          'No poll row with id "' + CONFIG.POLL_ID + '" exists.\n' +
+          'Run sword-poll/schema.sql in the Supabase SQL editor first.'
+        );
+        err.status = 404;
+        throw err;
+      }
+      return (rows[0].dates || []).filter(isDateStr).slice().sort();
+    });
+  }
+
+  function loadParticipants(){
+    return api('participants?poll_id=eq.' + POLL +
+               '&select=id,name,votes&order=created_at').then(function(rows){
+      return (Array.isArray(rows) ? rows : []).map(function(r){
+        return { id: r.id, name: r.name, votes: (r.votes || []).filter(isDateStr) };
+      });
+    });
+  }
+
+  function writeDates(dates){
+    return api('polls?id=eq.' + POLL + '&select=dates', {
+      method: 'PATCH',
+      body: { dates: dates, updated_at: new Date().toISOString() },
+      prefer: 'return=representation'
+    }).then(function(rows){ assertChanged(rows, 'updating the date list'); });
+  }
+
+  function writeVotes(p){
+    var tok = tokenFor(p.id);
+    if(!tok) return Promise.reject(noToken());
+    if(CONFIG.USE_RPC){
+      return api('rpc/set_votes', {
+        method: 'POST',
+        body: { p_id: p.id, p_token: tok, p_votes: p.votes }
+      }).then(function(ok){ assertChanged(ok === true ? [1] : [], 'saving votes'); });
+    }
+    return api('participants?id=eq.' + encodeURIComponent(p.id) + '&select=id', {
+      method: 'PATCH',
+      body: { votes: p.votes },
+      prefer: 'return=representation',
+      editorToken: tok
+    }).then(function(rows){ assertChanged(rows, 'saving votes'); });
+  }
+
+  function writeRemove(id){
+    var tok = tokenFor(id);
+    if(!tok) return Promise.reject(noToken());
+    if(CONFIG.USE_RPC){
+      return api('rpc/remove_participant', {
+        method: 'POST',
+        body: { p_id: id, p_token: tok }
+      }).then(function(ok){ assertChanged(ok === true ? [1] : [], 'removing the row'); });
+    }
+    return api('participants?id=eq.' + encodeURIComponent(id) + '&select=id', {
+      method: 'DELETE',
+      prefer: 'return=representation',
+      editorToken: tok
+    }).then(function(rows){ assertChanged(rows, 'removing the row'); });
+  }
+
+  function writeInsert(name, token){
+    return api('participants?select=id,name,votes', {
+      method: 'POST',
+      body: { poll_id: CONFIG.POLL_ID, name: name, votes: [], editor_token: token },
+      prefer: 'return=representation'
+    }).then(function(rows){
+      assertChanged(rows, 'adding your row');
+      var r = rows[0];
+      return { id: r.id, name: r.name, votes: (r.votes || []).filter(isDateStr) };
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // Rendering — pure functions of `state`
+  // ------------------------------------------------------------------
+  function render(){ renderHeader(); renderBody(); renderFooterAndSummary(); }
+
+  function renderHeader(){
+    var html = '<th class="name-col">Name</th>';
+    state.dates.forEach(function(d){
+      html += '<th class="' + (isWeekend(d) ? 'weekend' : '') + '" data-date="' + d + '">' +
+        '<div class="date-head">' +
+          (isReadOnly ? '' :
+            '<button class="remove-date-btn" type="button" data-date="' + d +
+            '" aria-label="Remove ' + esc(formatLabel(d)) + '">×</button>') +
+          '<span class="dow">' + dowAbbrev(d) + '</span>' +
+          '<span class="date-label">' + monthDay(d) + '</span>' +
+        '</div></th>';
+    });
+    dateHeaderRow.innerHTML = html;
+  }
+
+  function placeholderRow(cls, text){
+    var tr = document.createElement('tr');
+    tr.className = cls;
+    var td = document.createElement('td');
+    td.setAttribute('colspan', String(state.dates.length + 1));
+    td.textContent = text;
+    tr.appendChild(td);
+    return tr;
+  }
+
+  function renderBody(){
+    body.innerHTML = '';
+
+    if(!loaded){
+      body.appendChild(placeholderRow('loading-row', 'Loading the poll…'));
+      return;
+    }
+    if(state.participants.length === 0){
+      body.appendChild(placeholderRow(
+        'empty-row', "No one's voted yet — add your name above to get started."));
+      return;
+    }
+
+    state.participants.forEach(function(p){
+      var mine = ownsRow(p.id);
+
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-id', p.id);
+      if(mine) tr.classList.add('mine');
+
+      var nameTd = document.createElement('th');
+      nameTd.setAttribute('scope', 'row');
+      nameTd.className = 'name-col';
+      nameTd.innerHTML =
+        '<div class="name-cell">' +
+          '<span class="name-text"></span>' +
+          (mine ? '<span class="you-tag">You</span>' : '') +
+          '<button class="remove-btn' + (mine ? '' : ' hidden-btn') + '" type="button" data-id="' +
+            esc(p.id) + '" aria-label="Remove ' + esc(p.name) + '"' +
+            (mine ? '' : ' tabindex="-1" aria-hidden="true"') + '>×</button>' +
+        '</div>';
+      nameTd.querySelector('.name-text').textContent = p.name;
+      tr.appendChild(nameTd);
+
+      state.dates.forEach(function(d){
+        var td = document.createElement('td');
+        if(isWeekend(d)) td.classList.add('weekend');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.setAttribute('data-date', d);
+        cb.checked = p.votes.indexOf(d) !== -1;
+        // Only your own row is editable (enforced server-side too).
+        cb.disabled = !mine || isReadOnly;
+        cb.setAttribute('aria-label', p.name + ' — ' + formatLabel(d));
+        if(cb.disabled) cb.title = 'Only ' + p.name + ' can change this row.';
+        td.appendChild(cb);
+        tr.appendChild(td);
+      });
+
+      body.appendChild(tr);
+    });
+  }
+
+  function renderFooterAndSummary(){
+    var total = state.participants.length;
+    var html = '<td class="name-col">Votes</td>';
+    var counts = state.dates.map(function(d){
+      var n = state.participants.reduce(function(a,p){
+        return a + (p.votes.indexOf(d) !== -1 ? 1 : 0);
+      }, 0);
+      html += '<td class="' + (isWeekend(d) ? 'weekend' : '') + '" data-date="' + d + '">' + n + '</td>';
+      return { date: d, count: n };
+    });
+    footRow.innerHTML = html;
+
+    if(total === 0){
+      countLine.textContent = 'No votes yet';
+      rankList.innerHTML =
+        '<li class="summary-empty">Add a few names above and check off dates to see the best fit here.</li>';
+      return;
+    }
+
+    countLine.textContent = total + (total === 1 ? ' person has' : ' people have') + ' voted';
+
+    var maxCount = counts.length ? Math.max.apply(null, counts.map(function(c){ return c.count; })) : 0;
+    var ranked = counts.filter(function(c){ return c.count > 0; })
+      .sort(function(a,b){ return b.count - a.count; }).slice(0, 6);
+
+    if(ranked.length === 0){
+      rankList.innerHTML = '<li class="summary-empty">No one has checked a date yet.</li>';
+      return;
+    }
+
+    rankList.innerHTML = '';
+    ranked.forEach(function(c, i){
+      var li = document.createElement('li');
+      li.className = 'rank-row' + (c.count === maxCount ? ' top' : '');
+      var pct = maxCount > 0 ? Math.round((c.count / maxCount) * 100) : 0;
+      li.innerHTML =
+        '<span class="rank-num">' + (i+1) + '</span>' +
+        '<span class="rank-bar-track"><span class="rank-bar-fill" style="width:' + pct + '%"></span>' +
+        '<span class="rank-label">' + esc(formatLabel(c.date)) + '</span></span>' +
+        '<span class="rank-count">' + c.count + ' of ' + total + '</span>';
+      rankList.appendChild(li);
+    });
+  }
+
+  // Re-rendering rebuilds every checkbox, which would drop keyboard focus
+  // mid-interaction. Capture and restore it around a render.
+  function captureFocus(){
+    var af = document.activeElement;
+    if(!af || af.type !== 'checkbox') return null;
+    var tr = af.closest ? af.closest('tr[data-id]') : null;
+    if(!tr) return null;
+    return { id: tr.getAttribute('data-id'), date: af.getAttribute('data-date') };
+  }
+  function restoreFocus(f){
+    if(!f) return;
+    var el = body.querySelector(
+      'tr[data-id="' + sel(f.id) + '"] input[data-date="' + sel(f.date) + '"]');
+    if(el) el.focus();
+  }
+  function renderKeepingFocus(){
+    var f = captureFocus();
+    render();
+    restoreFocus(f);
+  }
+
+  function showHint(el, text, isError){
+    el.textContent = text;
+    el.classList.toggle('error', !!isError);
+  }
+
+  function armConfirm(btn, label){
+    btn.classList.add('confirming');
+    var original = btn.textContent;
+    btn.textContent = label || 'Sure?';
+    setTimeout(function(){
+      if(btn.isConnected && btn.classList.contains('confirming')){
+        btn.classList.remove('confirming');
+        btn.textContent = original;
+      }
+    }, 3000);
+  }
+
+  function findParticipant(id){
+    for(var i = 0; i < state.participants.length; i++){
+      if(state.participants[i].id === id) return state.participants[i];
+    }
+    return null;
+  }
+
+  // ------------------------------------------------------------------
+  // Actions
+  // ------------------------------------------------------------------
+
+  // Add yourself — saves immediately; the row only appears once the
+  // insert comes back, so the UI never claims a save that didn't happen.
+  function attemptJoin(){
+    if(isReadOnly) return;
+    var name = (nameInput.value || '').trim();
+    if(!name){ nameInput.focus(); return; }
+    if(state.participants.some(function(p){ return p.name.toLowerCase() === name.toLowerCase(); })){
+      showHint(nameHint, 'That name is already on the list.', true);
+      return;
+    }
+
+    var token = uid();
+    joinBtn.disabled = true;
+    showHint(nameHint, 'Adding…', false);
+
+    run(function(){
+      return writeInsert(name, token).then(function(row){
+        rememberToken(row.id, token);
+        if(!findParticipant(row.id)) state.participants.push(row);
+        nameInput.value = '';
+        showHint(nameHint, 'You’re in — check your dates below. They save as you click.', false);
+        renderKeepingFocus();
+      });
+    }).then(function(){
+      joinBtn.disabled = isReadOnly;
+      if(lastFailed) showHint(nameHint, 'Couldn’t add you — see the error above.', true);
+    });
+  }
+
+  joinBtn.addEventListener('click', attemptJoin);
+  nameInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); attemptJoin(); }
+  });
+
+  // Add a date — re-reads the poll first so two people adding at once
+  // don't clobber each other's addition.
+  function attemptAddDate(){
+    if(isReadOnly) return;
+    var val = dateInput.value;
+    if(!val || !isDateStr(val)){ dateInput.focus(); return; }
+    if(state.dates.indexOf(val) !== -1){
+      showHint(dateHint, 'That date is already an option.', true);
+      return;
+    }
+
+    addDateBtn.disabled = true;
+    datesPending = true;
+
+    run(function(){
+      return loadPoll().then(function(remote){
+        if(remote.indexOf(val) === -1) remote.push(val);
+        remote.sort();
+        return writeDates(remote).then(function(){
+          state.dates = remote;
+          datesPending = false;
+          dateInput.value = '';
+          showHint(dateHint, 'Added ' + formatLabel(val) + '.', false);
+          renderKeepingFocus();
+        });
+      });
+    }).then(function(){
+      addDateBtn.disabled = isReadOnly;
+      if(lastFailed) showHint(dateHint, 'Couldn’t add that date — see the error above.', true);
+    });
+  }
+
+  addDateBtn.addEventListener('click', attemptAddDate);
+  dateInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); attemptAddDate(); }
+  });
+
+  // Toggle a vote — debounced per participant.
+  body.addEventListener('change', function(e){
+    if(isReadOnly || !e.target || e.target.type !== 'checkbox') return;
+    var tr = e.target.closest('tr[data-id]');
+    if(!tr) return;
+    var id = tr.getAttribute('data-id');
+    if(!ownsRow(id)){ e.target.checked = !e.target.checked; return; }
+
+    var p = findParticipant(id);
+    if(!p) return;
+
+    var date = e.target.getAttribute('data-date');
+    var idx = p.votes.indexOf(date);
+    if(e.target.checked && idx === -1) p.votes.push(date);
+    if(!e.target.checked && idx !== -1) p.votes.splice(idx, 1);
+
+    renderFooterAndSummary();
+
+    votePending[id] = true;
+    setSave('busy', 'Saving…');
+    clearTimeout(voteTimers[id]);
+    voteTimers[id] = setTimeout(function(){
+      delete voteTimers[id];
+      var snapshot = p.votes.slice();
+      run(function(){
+        return writeVotes({ id: id, votes: snapshot }).then(function(){
+          // Only release the refresh shield if nothing changed since.
+          if(!voteTimers[id] &&
+             JSON.stringify(snapshot.slice().sort()) ===
+             JSON.stringify((findParticipant(id) || p).votes.slice().sort())){
+            delete votePending[id];
+          }
+        });
+      });
+    }, CONFIG.DEBOUNCE_MS);
+  });
+
+  // Remove your own row — two-click confirm, saves immediately.
+  body.addEventListener('click', function(e){
+    var btn = e.target.closest('.remove-btn');
+    if(!btn || isReadOnly) return;
+    var id = btn.getAttribute('data-id');
+    if(!ownsRow(id)) return;
+
+    if(!btn.classList.contains('confirming')){ armConfirm(btn, 'Remove?'); return; }
+
+    clearTimeout(voteTimers[id]);
+    delete voteTimers[id];
+    btn.disabled = true;
+
+    run(function(){
+      return writeRemove(id).then(function(){
+        forgetToken(id);
+        delete votePending[id];
+        state.participants = state.participants.filter(function(p){ return p.id !== id; });
+        renderKeepingFocus();
+      });
+    });
+  });
+
+  // Remove a date — open to everyone (the group agreed), two-click confirm.
+  dateHeaderRow.addEventListener('click', function(e){
+    var btn = e.target.closest('.remove-date-btn');
+    if(!btn || isReadOnly) return;
+    var date = btn.getAttribute('data-date');
+
+    if(!btn.classList.contains('confirming')){ armConfirm(btn, 'Remove?'); return; }
+
+    btn.disabled = true;
+    datesPending = true;
+
+    run(function(){
+      return loadPoll().then(function(remote){
+        var next = remote.filter(function(d){ return d !== date; });
+        return writeDates(next).then(function(){
+          state.dates = next;
+          datesPending = false;
+          // Votes for a dropped date stay in each row until that person
+          // next saves; the column is gone, so they no longer count.
+          state.participants.forEach(function(p){
+            p.votes = p.votes.filter(function(d){ return d !== date; });
+          });
+          renderKeepingFocus();
+        });
+      });
+    });
+  });
+
+  // ------------------------------------------------------------------
+  // Refresh — pull everyone else's changes without clobbering anything
+  // the local user is mid-way through.
+  // ------------------------------------------------------------------
+  function mergeRemote(dates, participants){
+    if(!datesPending) state.dates = dates;
+
+    var localById = {};
+    state.participants.forEach(function(p){ localById[p.id] = p; });
+
+    state.participants = participants.map(function(remote){
+      var local = localById[remote.id];
+      // Unsaved or in-flight local edits win until they land.
+      if(local && (votePending[remote.id] || voteTimers[remote.id])){
+        return local;
+      }
+      return remote;
+    });
+  }
+
+  function sameShape(dates, participants){
+    if(dates.length !== state.dates.length) return false;
+    for(var i = 0; i < dates.length; i++){ if(dates[i] !== state.dates[i]) return false; }
+    if(participants.length !== state.participants.length) return false;
+    for(var j = 0; j < participants.length; j++){
+      var a = participants[j], b = state.participants[j];
+      if(a.id !== b.id || a.name !== b.name) return false;
+      if(a.votes.length !== b.votes.length) return false;
+      var av = a.votes.slice().sort(), bv = b.votes.slice().sort();
+      for(var k = 0; k < av.length; k++){ if(av[k] !== bv[k]) return false; }
+    }
+    return true;
+  }
+
+  function refresh(){
+    if(!configured || isReadOnly) return Promise.resolve();
+    // Don't race our own writes.
+    if(inflight > 0) return Promise.resolve();
+
+    return Promise.all([loadPoll(), loadParticipants()]).then(function(res){
+      refreshFails = 0;
+      var dates = res[0], participants = res[1];
+      if(loaded && sameShape(dates, participants)) return;
+      mergeRemote(dates, participants);
+      loaded = true;
+      renderKeepingFocus();
+    }, function(err){
+      refreshFails++;
+      // One blip is noise; a persistent problem is worth showing — but
+      // never stomp on a save error the user still needs to see.
+      if(refreshFails >= 2 && !lastFailed){
+        showError(new Error('Couldn’t refresh the poll.\n' + err.message), function(){
+          refreshFails = 0;
+          clearError();
+          setSave('busy', 'Refreshing…');
+          return refresh().then(function(){
+            if(!lastFailed) setSave('ok', loaded ? 'Up to date' : 'Loaded');
+          });
+        });
+        setSave('err', 'Couldn’t refresh — retry');
+      }
+      if(!loaded) throw err;
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // Boot
+  // ------------------------------------------------------------------
+  function boot(){
+    render();   // paints the "Loading the poll…" placeholder
+
+    if(!configured){
+      loaded = true;
+      setReadOnly(
+        'This poll isn’t connected to its database yet. Open ' +
+        '<code>static/sword/index.html</code> and fill in the <code>CONFIG</code> ' +
+        'block with your Supabase project URL and anon key — setup steps are ' +
+        'in <code>sword-poll/README.md</code>.'
+      );
+      return;
+    }
+
+    // ?name=Bill prefills the name field.
+    try{
+      var qname = new URLSearchParams(location.search).get('name');
+      if(qname) nameInput.value = qname.slice(0, 40);
+    }catch(e){}
+
+    setSave('busy', 'Loading…');
+
+    refresh().then(function(){
+      if(!lastFailed) setSave('ok', 'Up to date');
+    }, function(err){
+      loaded = true;
+      render();
+      showError(new Error('Couldn’t load the poll.\n' + err.message), function(){
+        clearError();
+        setSave('busy', 'Loading…');
+        return refresh().then(function(){
+          if(!lastFailed) setSave('ok', 'Up to date');
+        }, function(e2){
+          showError(new Error('Couldn’t load the poll.\n' + e2.message), null);
+        });
+      });
+    });
+
+    // refresh() rethrows before the first successful load so boot can report
+    // it; background callers must swallow that or it surfaces as an unhandled
+    // rejection. They already report their own failures via showError.
+    function backgroundRefresh(){ refresh().catch(function(){}); }
+
+    setInterval(backgroundRefresh, CONFIG.REFRESH_MS);
+
+    // Coming back to a backgrounded tab should show current data at once.
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden) backgroundRefresh();
+    });
+  }
+
+  // Warn if a debounced vote hasn't landed yet.
+  window.addEventListener('beforeunload', function(e){
+    var unsaved = Object.keys(voteTimers).length > 0 || inflight > 0;
+    if(unsaved && !isReadOnly){ e.preventDefault(); e.returnValue = ''; }
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
