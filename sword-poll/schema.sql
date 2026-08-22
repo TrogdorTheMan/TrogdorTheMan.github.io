@@ -36,15 +36,28 @@ create index if not exists participants_poll_idx on participants(poll_id);
 
 
 -- -------------------------------------------------------------------
--- Seed the poll with the agreed dates
+-- Seed the poll: every Saturday and Sunday from 2026-08-22 through the
+-- end of the year (38 dates; the last weekend day of 2026 is Sun Dec 27).
+--
+-- NOTE: the ON CONFLICT below means this block does nothing if the poll row
+-- already exists, so re-running the file will NOT change the date list. To
+-- reset the dates on an existing poll, run the UPDATE at the bottom of this
+-- file instead.
 -- -------------------------------------------------------------------
 insert into polls (id, title, dates) values (
   'sword-carving',
   'Sword Carving Days with Bill',
   array[
     '2026-08-22','2026-08-23','2026-08-29','2026-08-30',
+    '2026-09-05','2026-09-06','2026-09-12','2026-09-13',
+    '2026-09-19','2026-09-20','2026-09-26','2026-09-27',
     '2026-10-03','2026-10-04','2026-10-10','2026-10-11',
-    '2026-10-17','2026-10-18','2026-10-24','2026-10-25','2026-10-31'
+    '2026-10-17','2026-10-18','2026-10-24','2026-10-25',
+    '2026-10-31','2026-11-01','2026-11-07','2026-11-08',
+    '2026-11-14','2026-11-15','2026-11-21','2026-11-22',
+    '2026-11-28','2026-11-29','2026-12-05','2026-12-06',
+    '2026-12-12','2026-12-13','2026-12-19','2026-12-20',
+    '2026-12-26','2026-12-27'
   ]::date[]
 )
 on conflict (id) do nothing;
@@ -183,6 +196,12 @@ grant  execute on function public.remove_participant(uuid, uuid)  to anon, authe
 
 -- Reset the poll — wipes every vote, keeps the dates:
 --   delete from participants where poll_id = 'sword-carving';
+
+-- Reset the DATE LIST on a poll that already exists (the seed above is
+-- skipped once the row is there). Paste the same array as above:
+--   update polls set dates = array[
+--     '2026-08-22', ... '2026-12-27'
+--   ]::date[] where id = 'sword-carving';
 
 -- See the current tally:
 --   select d as date, count(*) filter (where d = any(p.votes)) as votes
